@@ -5,6 +5,7 @@
   "dependencies": {
     "react": "^15.6.2",
     "react-dom": "^15.6.2",
+    "react-refetch": "^1.0.1",
     "react-scripts": "1.0.13"
   },
   "scripts": {
