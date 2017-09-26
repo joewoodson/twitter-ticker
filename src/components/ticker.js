@@ -8,7 +8,7 @@ const rootUrl = 'https://api.twitter.com/1.1/';
 const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 
 class Ticker extends Component {
-  componentDidMount(){
+  componentDidUpdate(){
     this.initWebTicker();
   }
 
@@ -22,13 +22,13 @@ class Ticker extends Component {
   render() {
     const { favoritesFetch } = this.props
 
-    return (
-      <ul id="webTicker" ref="webTicker">
- 	    <li>This List Item will scroll infintely</li>
- 	    <li>And this one will follow it</li>
- 	    <li>Finally when it goes out of screen, it will queue again at the end</li>
-      </ul>
-    );
+    // return (
+    //   <ul id="webTicker" ref="webTicker">
+ 	 //    <li>This List Item will scroll infintely</li>
+ 	 //    <li>And this one will follow it</li>
+ 	 //    <li>Finally when it goes out of screen, it will queue again at the end</li>
+    //   </ul>
+    // );
 
     if (favoritesFetch.pending) {
       return <h3>Loading...</h3>
@@ -40,7 +40,7 @@ class Ticker extends Component {
         <Tweet key={favorite.id_str} text={favorite.text} />
       );
 
-      return <ul>{favorites}</ul>
+      return <ul id="webTicker" ref="webTicker">{favorites}</ul>
 
     }
 
