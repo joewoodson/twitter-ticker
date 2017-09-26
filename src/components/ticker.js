@@ -49,7 +49,7 @@ class Ticker extends Component {
 
 export default connect(props => ({
   favoritesFetch: {
-    url: `${proxyUrl}${rootUrl}favorites/list.json?count=10&screen_name=joewdsn`,
+    url: `${proxyUrl}${rootUrl}favorites/list.json?&screen_name=wizards_magic`,
     headers: {
       Authorization: 'Bearer AAAAAAAAAAAAAAAAAAAAAC7k2QAAAAAAUGifZBfJhkrz2xTH6o4f0F0KQcA%3DIqMxALOukBJv8V77TeGVsuGxwxlTKu3B1S8KUW3628TN3RrNSt'
     },
