@@ -30,7 +30,7 @@ class Ticker extends Component {
       return <h3>Error</h3>
     } else if (favoritesFetch.fulfilled) {
       const favorites = favoritesFetch.value.map((favorite) =>
-        <Tweet key={favorite.id_str} text={favorite.text} author={favorite.user.screen_name} />
+        <Tweet key={favorite.id_str} text={favorite.text} author={favorite.user.screen_name} profileImage={favorite.user.profile_image_url} />
       );
 
       return <ul id="webTicker" ref="webTicker">{favorites}</ul>
@@ -42,7 +42,7 @@ class Ticker extends Component {
 
 export default connect(props => ({
   favoritesFetch: {
-    url: `${proxyUrl}${rootUrl}favorites/list.json?&screen_name=reactjs`,
+    url: `${proxyUrl}${rootUrl}favorites/list.json?&screen_name=igbce`,
     headers: {
       Authorization: 'Bearer AAAAAAAAAAAAAAAAAAAAAC7k2QAAAAAAUGifZBfJhkrz2xTH6o4f0F0KQcA%3DIqMxALOukBJv8V77TeGVsuGxwxlTKu3B1S8KUW3628TN3RrNSt'
     },

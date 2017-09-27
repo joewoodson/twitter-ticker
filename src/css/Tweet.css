@@ -2,10 +2,18 @@
   font-size: 30px;
   color: #3c3c3b;
   padding: 0 18px !important;
+  display: flex;
+  align-items: center;
+}
+
+.tweet img {
+  vertical-align: middle;
+  margin-right: 7px;
+  border-radius: 100%;
 }
 
 .author {
-  padding-right: 4px;
+  padding-right: 7px;
 }
 
 .text {
