@@ -7,6 +7,18 @@ declare var jQuery: jQuery;
 const rootUrl = 'https://api.twitter.com/1.1/';
 const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+const speed = (getParameterByName('speed') && !isNaN(getParameterByName('speed'))) ? getParameterByName('speed') : 50;
+
 class Ticker extends Component {
   componentDidMount(){
     this.initWebTicker();
@@ -18,7 +30,7 @@ class Ticker extends Component {
 
   initWebTicker(){
     jQuery(this.refs.webTicker).webTicker({
-      speed: 50,
+      speed: speed,
       height: "64px",
       hoverpause: false,
     });
