@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import '../css/Tweet.css';
 
 class Tweet extends Component {
   render() {
     return (
-      <li>{this.props.text}</li>
+      <li className="tweet"><span className="author">@{this.props.author}:</span> <span className="text">{this.props.text}</span></li>
     );
   }
 }

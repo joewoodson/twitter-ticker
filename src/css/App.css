@@ -1,5 +1,11 @@
+h1, h2, h3, h4, h5, p, span, div {
+  font-family: 'Asap Condensed', sans-serif;
+}
+
 .App {
   text-align: center;
+  height: 64px;
+  background: #fff;
 }
 
 .App-logo {

@@ -1,0 +1,13 @@
+.tweet {
+  font-size: 30px;
+  color: #3c3c3b;
+  padding: 0 26px;
+}
+
+.author {
+  padding-right: 4px;
+}
+
+.text {
+  font-weight: 500;
+}

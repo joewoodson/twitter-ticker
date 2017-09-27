@@ -1,0 +1,16 @@
+.ticker-title {
+  position: fixed;
+  padding: 0 15px;
+  background: #e30613;
+  height: 64px;
+  line-height: 64px;
+  z-index: 10;
+  border-left: 13px solid #A51008;
+}
+
+.ticker-title h1 {
+  margin: 0;
+  font-size: 50px;
+  color: #fff;
+  font-weight: 500;
+}

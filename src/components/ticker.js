@@ -14,21 +14,14 @@ class Ticker extends Component {
 
   initWebTicker(){
     jQuery(this.refs.webTicker).webTicker({
-      speed: 150,
+      speed: 50,
+      height: "64px",
       hoverpause: false,
     });
   }
 
   render() {
     const { favoritesFetch } = this.props
-
-    // return (
-    //   <ul id="webTicker" ref="webTicker">
- 	 //    <li>This List Item will scroll infintely</li>
- 	 //    <li>And this one will follow it</li>
- 	 //    <li>Finally when it goes out of screen, it will queue again at the end</li>
-    //   </ul>
-    // );
 
     if (favoritesFetch.pending) {
       return <h3>Loading...</h3>
@@ -37,7 +30,7 @@ class Ticker extends Component {
       return <h3>Error</h3>
     } else if (favoritesFetch.fulfilled) {
       const favorites = favoritesFetch.value.map((favorite) =>
-        <Tweet key={favorite.id_str} text={favorite.text} />
+        <Tweet key={favorite.id_str} text={favorite.text} author={favorite.user.screen_name} />
       );
 
       return <ul id="webTicker" ref="webTicker">{favorites}</ul>
@@ -49,7 +42,7 @@ class Ticker extends Component {
 
 export default connect(props => ({
   favoritesFetch: {
-    url: `${proxyUrl}${rootUrl}favorites/list.json?&screen_name=wizards_magic`,
+    url: `${proxyUrl}${rootUrl}favorites/list.json?&screen_name=reactjs`,
     headers: {
       Authorization: 'Bearer AAAAAAAAAAAAAAAAAAAAAC7k2QAAAAAAUGifZBfJhkrz2xTH6o4f0F0KQcA%3DIqMxALOukBJv8V77TeGVsuGxwxlTKu3B1S8KUW3628TN3RrNSt'
     },

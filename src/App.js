@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
+import TickerTitle from './components/ticker-title';
 import Ticker from './components/ticker';
-import './App.css';
+import './css/App.css';
 
 class App extends Component {
   render() {
     return (
-      <Ticker />
+      <div className="App">
+        <TickerTitle />
+        <Ticker />
+      </div>
     );
   }
 }
