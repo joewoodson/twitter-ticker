@@ -1,3 +1,9 @@
 body {
   background: #000;
 }
+
+.error-message {
+  font-size: 30px;
+  line-height: 64px;
+  color: #3c3c3b;
+}
