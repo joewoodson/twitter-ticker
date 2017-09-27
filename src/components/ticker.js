@@ -8,6 +8,10 @@ const rootUrl = 'https://api.twitter.com/1.1/';
 const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 
 class Ticker extends Component {
+  componentDidMount(){
+    this.initWebTicker();
+  }
+
   componentDidUpdate(){
     this.initWebTicker();
   }
@@ -24,7 +28,9 @@ class Ticker extends Component {
     const { favoritesFetch } = this.props
 
     if (favoritesFetch.pending) {
-      return <h3>Loading...</h3>
+      // return <ul id="webTicker" ref="webTicker"><li className="loading-message">Loading...</li></ul>
+      console.log('Loading...');
+      return <span></span>
     } else if (favoritesFetch.rejected) {
       console.log(favoritesFetch.reason)
       return <h3>Error</h3>
