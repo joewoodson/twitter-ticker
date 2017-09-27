@@ -8,12 +8,11 @@
 
 .tweet img {
   vertical-align: middle;
-  margin-right: 7px;
-  border-radius: 100%;
+  margin: 0 12px 0 8px;
 }
 
 .author {
-  padding-right: 7px;
+  padding: 0 7px 0 7px;
 }
 
 .text {
