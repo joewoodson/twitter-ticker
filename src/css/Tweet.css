@@ -1,7 +1,7 @@
 .tweet {
   font-size: 30px;
   color: #3c3c3b;
-  padding: 0 26px;
+  padding: 0 18px !important;
 }
 
 .author {
