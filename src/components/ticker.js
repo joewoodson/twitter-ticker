@@ -33,7 +33,7 @@ class Ticker extends Component {
       return <span></span>
     } else if (favoritesFetch.rejected) {
       console.log(favoritesFetch.reason)
-      return <h3>Error</h3>
+      return <h3 className="error-message">{favoritesFetch.reason.stack}</h3>
     } else if (favoritesFetch.fulfilled) {
       const favorites = favoritesFetch.value.map((favorite) =>
         <Tweet key={favorite.id_str} text={favorite.text} author={favorite.user.screen_name} profileImage={favorite.user.profile_image_url} />
