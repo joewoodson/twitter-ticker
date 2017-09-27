@@ -49,9 +49,19 @@ class Ticker extends Component {
     } else if (favoritesFetch.fulfilled) {
       console.log(favoritesFetch.value);
 
-      const favorites = favoritesFetch.value.map((favorite) =>
-        <Tweet key={favorite.id_str} text={favorite.full_text} author={favorite.user.screen_name} profileImage={favorite.user.profile_image_url} mediaUrl={favorite.entities.media ? favorite.entities.media[0].media_url_https : null} />
-      );
+      const favorites = favoritesFetch.value.map((favorite) => {
+        // remove urls from Tweets that include media
+        let text = favorite.full_text;
+        if (favorite.entities.urls[0]) {
+          text = text.replace(favorite.entities.urls[0].url, '');
+        }
+
+        if (favorite.extended_entities) {
+          text= text.replace(favorite.extended_entities.media[0].url, '');
+        }
+
+        return <Tweet key={favorite.id_str} text={text} author={favorite.user.screen_name} profileImage={favorite.user.profile_image_url} mediaUrl={favorite.entities.media ? favorite.entities.media[0].media_url_https : null} />
+      });
 
       return <ul id="webTicker" ref="webTicker">{favorites}</ul>
 
