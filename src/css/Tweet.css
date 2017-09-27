@@ -1,9 +1,18 @@
 .tweet {
   font-size: 30px;
   color: #3c3c3b;
-  padding: 0 18px !important;
+  padding: 0 !important;
   display: flex;
   align-items: center;
+}
+
+.tweet::after {
+  content: "";
+  display: inline-block;
+  margin: 0 32px !important;
+  width: 2px;
+  height: 45px;
+  background: lightgrey;
 }
 
 .tweet img {
@@ -13,10 +22,12 @@
 
 .tweet .image-attached {
   max-height: 64px;
+  margin: 0;
+  margin-left: 12px;
 }
 
 .author {
-  padding: 0 7px 0 7px;
+  padding-right: 12px;
 }
 
 .text {
