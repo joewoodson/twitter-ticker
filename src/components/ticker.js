@@ -9,7 +9,7 @@ const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 
 function getParameterByName(name, url) {
     if (!url) url = window.location.href;
-    name = name.replace(/[\[\]]/g, "\\$&");
+    name = name.replace(/[[\]]/g, "\\$&");
     var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
         results = regex.exec(url);
     if (!results) return null;
@@ -48,8 +48,9 @@ class Ticker extends Component {
       return <h3 className="error-message">{favoritesFetch.reason.stack}</h3>
     } else if (favoritesFetch.fulfilled) {
       console.log(favoritesFetch.value);
+
       const favorites = favoritesFetch.value.map((favorite) =>
-        <Tweet key={favorite.id_str} text={favorite.full_text} author={favorite.user.screen_name} profileImage={favorite.user.profile_image_url} />
+        <Tweet key={favorite.id_str} text={favorite.full_text} author={favorite.user.screen_name} profileImage={favorite.user.profile_image_url} mediaUrl={favorite.entities.media ? favorite.entities.media[0].media_url_https : null} />
       );
 
       return <ul id="webTicker" ref="webTicker">{favorites}</ul>

@@ -5,7 +5,7 @@ class TickerTitle extends Component {
   render() {
     return (
       <div className="ticker-title">
-        <h1>#IGBCE</h1>
+        <h1>#IGBCE17</h1>
       </div>
     );
   }
