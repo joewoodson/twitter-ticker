@@ -1,4 +1,5 @@
 .tweet {
+  font-family: 'Garage Gothic FB Regular', 'Asap Condensed';
   font-size: 30px;
   color: #3c3c3b;
   padding: 0 !important;
@@ -28,8 +29,5 @@
 
 .author {
   padding-right: 12px;
-}
-
-.text {
-  font-weight: 500;
+  font-family: 'Garage Gothic FB Bold', 'Asap Condensed';
 }

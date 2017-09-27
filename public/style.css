@@ -1,3 +1,18 @@
+@font-face {
+    font-family: 'Garage Gothic FB Black';
+    src: url('/Garage Gothic FB Black.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Garage Gothic FB Bold';
+    src: url('/Garage Gothic FB Bold.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Garage Gothic FB Regular';
+    src: url('/Garage Gothic FB Regular.otf') format('opentype');
+}
+
 body {
   background: #000;
 }
