@@ -5,7 +5,7 @@ import Tweet from './tweet';
 declare var jQuery: jQuery;
 
 const rootUrl = 'https://api.twitter.com/1.1/';
-// const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
 
 class Ticker extends Component {
   componentDidMount(){
@@ -48,7 +48,7 @@ class Ticker extends Component {
 
 export default connect(props => ({
   favoritesFetch: {
-    url: `${rootUrl}favorites/list.json?&screen_name=igbce`,
+    url: `${proxyUrl}${rootUrl}favorites/list.json?&screen_name=igbce`,
     headers: {
       Authorization: 'Bearer AAAAAAAAAAAAAAAAAAAAAC7k2QAAAAAAUGifZBfJhkrz2xTH6o4f0F0KQcA%3DIqMxALOukBJv8V77TeGVsuGxwxlTKu3B1S8KUW3628TN3RrNSt'
     },
