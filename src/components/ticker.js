@@ -47,9 +47,8 @@ class Ticker extends Component {
       console.log(favoritesFetch.reason)
       return <h3 className="error-message">{favoritesFetch.reason.stack}</h3>
     } else if (favoritesFetch.fulfilled) {
-      console.log(favoritesFetch.value);
-
       const favorites = favoritesFetch.value.map((favorite) => {
+
         // remove urls from Tweets that include media
         let text = favorite.full_text;
         if (favorite.entities.urls[0]) {
