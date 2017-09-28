@@ -34,7 +34,13 @@ class Ticker extends Component {
     if (favorites) {
       this.setState({ favorites: JSON.parse(favorites) });
       return;
+    } else {
+      this.fetchTweets();
     }
+  }
+
+  componentDidUpdate(){
+    this.initWebTicker();
   }
 
   componentWillReceiveProps(){
@@ -56,24 +62,8 @@ class Ticker extends Component {
     });
   }
 
-  render() {
-
-
+  updateTweets(){
     const { favoritesFetch } = this.props
-    const favoritesList = this.state.favorites.map((favorite) => {
-
-      // remove urls from Tweets that include media
-      let text = favorite.full_text;
-      if (favorite.entities.urls[0]) {
-        text = text.replace(favorite.entities.urls[0].url, '');
-      }
-
-      if (favorite.extended_entities) {
-        text= text.replace(favorite.extended_entities.media[0].url, '');
-      }
-
-      return <Tweet key={favorite.id_str} text={text} author={favorite.user.screen_name} profileImage={favorite.user.profile_image_url} mediaUrl={favorite.entities.media ? favorite.entities.media[0].media_url_https : null} />
-    });
 
     // if (favoritesFetch.pending) {
       // return <ul id="webTicker" ref="webTicker"><li className="loading-message">Loading...</li></ul>
@@ -84,6 +74,7 @@ class Ticker extends Component {
       return <h3 className="error-message">{favoritesFetch.reason.stack}</h3>
     } else if (favoritesFetch.fulfilled) {
       console.log('fetched');
+      this.setState({ favorites: favoritesFetch.value });
       // return <ul id="webTicker" ref="webTicker">{favoritesList}</ul>
       // SET LOCAL STORAGE HERE AND STATE OF FAVORITES
       // const updatedFavorites = favoritesFetch.value.map((favorite) => {
@@ -102,18 +93,58 @@ class Ticker extends Component {
       // });
 
     }
+  }
+
+  fetchTweets(){
+    const request = new Request(`${proxyUrl}${rootUrl}favorites/list.json?&tweet_mode=extended&screen_name=igbce&count=10`, {
+    	headers: new Headers({
+    		Authorization: 'Bearer AAAAAAAAAAAAAAAAAAAAAC7k2QAAAAAAUGifZBfJhkrz2xTH6o4f0F0KQcA%3DIqMxALOukBJv8V77TeGVsuGxwxlTKu3B1S8KUW3628TN3RrNSt'
+    	})
+    });
+
+    fetch(request).then((response) => {
+    	return response.json();
+    }).then((j) => {
+      console.log(j);
+      this.setState({ favorites: j });
+    }).catch((err) => {
+    	// Error :(
+      console.log('Error: ' + err);
+    });
+
+  }
+
+  render() {
+
+
+    const favoritesList = this.state.favorites.map((favorite) => {
+
+      // remove urls from Tweets that include media
+      let text = favorite.full_text;
+      if (favorite.entities.urls[0]) {
+        text = text.replace(favorite.entities.urls[0].url, '');
+      }
+
+      if (favorite.extended_entities) {
+        text= text.replace(favorite.extended_entities.media[0].url, '');
+      }
+
+      return <Tweet key={favorite.id_str} text={text} author={favorite.user.screen_name} profileImage={favorite.user.profile_image_url} mediaUrl={favorite.entities.media ? favorite.entities.media[0].media_url_https : null} />
+    });
 
     return <ul id="webTicker" className={this.state.hideTweets ? "hidden" : ""} ref="webTicker">{favoritesList}</ul>
 
   }
 }
 
-export default connect(props => ({
-  favoritesFetch: {
-    url: `${proxyUrl}${rootUrl}favorites/list.json?&tweet_mode=extended&screen_name=igbce&count=10`,
-    refreshInterval: 20000,
-    headers: {
-      Authorization: 'Bearer AAAAAAAAAAAAAAAAAAAAAC7k2QAAAAAAUGifZBfJhkrz2xTH6o4f0F0KQcA%3DIqMxALOukBJv8V77TeGVsuGxwxlTKu3B1S8KUW3628TN3RrNSt'
-    },
-  }
-}))(Ticker)
+// export default connect(props => ({
+//   favoritesFetch: {
+//     url: `${proxyUrl}${rootUrl}favorites/list.json?&tweet_mode=extended&screen_name=igbce&count=10`,
+//     refreshInterval: 60000,
+//     headers: {
+//       Authorization: 'Bearer AAAAAAAAAAAAAAAAAAAAAC7k2QAAAAAAUGifZBfJhkrz2xTH6o4f0F0KQcA%3DIqMxALOukBJv8V77TeGVsuGxwxlTKu3B1S8KUW3628TN3RrNSt'
+//     },
+//   }
+// }))(Ticker)
+
+export default Ticker;
