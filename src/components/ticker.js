@@ -30,6 +30,10 @@ class Ticker extends Component {
   }
 
   componentDidMount(){
+    const intervalId = setInterval(this.fetchTweets.bind(this), 10000);
+   // store intervalId in the state so it can be accessed later:
+   this.setState({intervalId: intervalId});
+
     const favorites = localStorage.getItem('tweets');
     if (favorites) {
       this.setState({ favorites: JSON.parse(favorites) });
@@ -37,6 +41,11 @@ class Ticker extends Component {
     } else {
       this.fetchTweets();
     }
+  }
+
+  componentWillUnmount(){
+     // use intervalId from the state to clear the interval
+     clearInterval(this.state.intervalId);
   }
 
   componentDidUpdate(){
