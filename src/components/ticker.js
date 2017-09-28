@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ReactDOMServer from 'react-dom/server';
 import { connect } from 'react-refetch'
 import Tweet from './tweet';
 
@@ -42,7 +43,7 @@ class Ticker extends Component {
       this.fetchTweets();
     }
 
-    const intervalId = setInterval(this.fetchTweets.bind(this), 10000);
+    const intervalId = setInterval(this.fetchTweets.bind(this), 3000);
     // store intervalId in the state so it can be accessed later:
     this.setState({intervalId: intervalId});
   }
@@ -77,11 +78,33 @@ class Ticker extends Component {
   }
 
   updateWebTicker(){
+    let favoritesHtml = '';
+    const updatedFavoritesList = this.state.favorites.map((favorite, i) => {
+
+      // remove urls from Tweets that include media
+      let text = favorite.full_text;
+      if (favorite.entities.urls[0]) {
+        text = text.replace(favorite.entities.urls[0].url, '');
+      }
+
+      if (favorite.extended_entities) {
+        text= text.replace(favorite.extended_entities.media[0].url, '');
+      }
+
+      return <Tweet key={favorite.id_str} itemNum={i+1} text={text} author={favorite.user.screen_name} profileImage={favorite.user.profile_image_url} mediaUrl={favorite.entities.media ? favorite.entities.media[0].media_url_https : null} />
+    });
+
+    const favoriteHtml = ReactDOMServer.renderToStaticMarkup(updatedFavoritesList[0]);
+
+    for (let i = 0; i < updatedFavoritesList.length; i++) {
+      favoritesHtml += ReactDOMServer.renderToStaticMarkup(updatedFavoritesList[i]);
+    }
+
     jQuery(this.refs.webTicker).webTicker('update',
-        '<li data-update="item4">Maze Digital will now be commercially supporting the Web Ticker</li>',
+        favoritesHtml,
         'swap',
         false,
-        false
+        true
     );
   }
 
@@ -95,7 +118,6 @@ class Ticker extends Component {
     fetch(request).then((response) => {
     	return response.json();
     }).then((j) => {
-      console.log(j);
       this.setState({ favorites: j });
       if (!this.state.running) {
         this.setState({ running: true });
