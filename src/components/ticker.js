@@ -20,12 +20,27 @@ function getParameterByName(name, url) {
 const speed = (getParameterByName('speed') && !isNaN(getParameterByName('speed'))) ? getParameterByName('speed') : 50;
 
 class Ticker extends Component {
-  componentDidMount(){
-    this.initWebTicker();
+  constructor(props) {
+    super(props);
+    this.state = {
+      favorites: [],
+      running: false,
+    };
   }
 
-  componentDidUpdate(){
-    this.initWebTicker();
+  componentDidMount(){
+    const favorites = localStorage.getItem('tweets');
+    if (favorites) {
+      this.setState({ favorites: JSON.parse(favorites) });
+      return;
+    }
+  }
+
+  componentWillReceiveProps(){
+    if (!this.state.running) {
+      this.initWebTicker();
+      this.setState({ running: true });
+    }
   }
 
   initWebTicker(){
@@ -33,45 +48,66 @@ class Ticker extends Component {
       speed: speed,
       height: "64px",
       hoverpause: false,
+      duplicate: true,
     });
   }
 
   render() {
-    const { favoritesFetch } = this.props
 
-    if (favoritesFetch.pending) {
+
+    const { favoritesFetch } = this.props
+    const favoritesList = this.state.favorites.map((favorite) => {
+
+      // remove urls from Tweets that include media
+      let text = favorite.full_text;
+      if (favorite.entities.urls[0]) {
+        text = text.replace(favorite.entities.urls[0].url, '');
+      }
+
+      if (favorite.extended_entities) {
+        text= text.replace(favorite.extended_entities.media[0].url, '');
+      }
+
+      return <Tweet key={favorite.id_str} text={text} author={favorite.user.screen_name} profileImage={favorite.user.profile_image_url} mediaUrl={favorite.entities.media ? favorite.entities.media[0].media_url_https : null} />
+    });
+
+    // if (favoritesFetch.pending) {
       // return <ul id="webTicker" ref="webTicker"><li className="loading-message">Loading...</li></ul>
-      console.log('Loading...');
-      return <span></span>
-    } else if (favoritesFetch.rejected) {
+      // console.log('Loading...');
+      // return <span></span>
+    if (favoritesFetch.rejected) {
       console.log(favoritesFetch.reason)
       return <h3 className="error-message">{favoritesFetch.reason.stack}</h3>
     } else if (favoritesFetch.fulfilled) {
-      const favorites = favoritesFetch.value.map((favorite) => {
-
-        // remove urls from Tweets that include media
-        let text = favorite.full_text;
-        if (favorite.entities.urls[0]) {
-          text = text.replace(favorite.entities.urls[0].url, '');
-        }
-
-        if (favorite.extended_entities) {
-          text= text.replace(favorite.extended_entities.media[0].url, '');
-        }
-
-        return <Tweet key={favorite.id_str} text={text} author={favorite.user.screen_name} profileImage={favorite.user.profile_image_url} mediaUrl={favorite.entities.media ? favorite.entities.media[0].media_url_https : null} />
-      });
-
-      return <ul id="webTicker" ref="webTicker">{favorites}</ul>
+      console.log('fetched');
+      // return <ul id="webTicker" ref="webTicker">{favoritesList}</ul>
+      // SET LOCAL STORAGE HERE AND STATE OF FAVORITES
+      // const updatedFavorites = favoritesFetch.value.map((favorite) => {
+      //
+      //   // remove urls from Tweets that include media
+      //   let text = favorite.full_text;
+      //   if (favorite.entities.urls[0]) {
+      //     text = text.replace(favorite.entities.urls[0].url, '');
+      //   }
+      //
+      //   if (favorite.extended_entities) {
+      //     text= text.replace(favorite.extended_entities.media[0].url, '');
+      //   }
+      //
+      //   return <Tweet key={favorite.id_str} text={text} author={favorite.user.screen_name} profileImage={favorite.user.profile_image_url} mediaUrl={favorite.entities.media ? favorite.entities.media[0].media_url_https : null} />
+      // });
 
     }
+
+    return <ul id="webTicker" ref="webTicker">{favoritesList}</ul>
 
   }
 }
 
 export default connect(props => ({
   favoritesFetch: {
-    url: `${proxyUrl}${rootUrl}favorites/list.json?&tweet_mode=extended&screen_name=igbce`,
+    url: `${proxyUrl}${rootUrl}favorites/list.json?&tweet_mode=extended&screen_name=igbce&count=10`,
+    refreshInterval: 20000,
     headers: {
       Authorization: 'Bearer AAAAAAAAAAAAAAAAAAAAAC7k2QAAAAAAUGifZBfJhkrz2xTH6o4f0F0KQcA%3DIqMxALOukBJv8V77TeGVsuGxwxlTKu3B1S8KUW3628TN3RrNSt'
     },
