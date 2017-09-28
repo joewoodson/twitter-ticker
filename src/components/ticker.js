@@ -49,10 +49,11 @@ class Ticker extends Component {
   }
 
   componentDidUpdate(){
-    this.initWebTicker();
+    // this.initWebTicker();
   }
 
   componentWillReceiveProps(){
+    // this.initWebTicker();
     if (!this.state.running) {
       this.initWebTicker();
       this.setState({
@@ -116,6 +117,10 @@ class Ticker extends Component {
     }).then((j) => {
       console.log(j);
       this.setState({ favorites: j });
+      if (!this.state.running) {
+        this.setState({ running: true });
+        this.initWebTicker();
+      }
     }).catch((err) => {
     	// Error :(
       console.log('Error: ' + err);
