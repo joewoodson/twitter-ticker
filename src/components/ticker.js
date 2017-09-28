@@ -42,7 +42,7 @@ class Ticker extends Component {
       this.fetchTweets();
     }
 
-    const intervalId = setInterval(this.fetchTweets.bind(this), 40000);
+    const intervalId = setInterval(this.fetchTweets.bind(this), 10000);
     // store intervalId in the state so it can be accessed later:
     this.setState({intervalId: intervalId});
   }
@@ -85,39 +85,6 @@ class Ticker extends Component {
     );
   }
 
-  updateTweets(){
-    const { favoritesFetch } = this.props
-
-    // if (favoritesFetch.pending) {
-      // return <ul id="webTicker" ref="webTicker"><li className="loading-message">Loading...</li></ul>
-      // console.log('Loading...');
-      // return <span></span>
-    if (favoritesFetch.rejected) {
-      console.log(favoritesFetch.reason)
-      return <h3 className="error-message">{favoritesFetch.reason.stack}</h3>
-    } else if (favoritesFetch.fulfilled) {
-      console.log('fetched');
-      this.setState({ favorites: favoritesFetch.value });
-      // return <ul id="webTicker" ref="webTicker">{favoritesList}</ul>
-      // SET LOCAL STORAGE HERE AND STATE OF FAVORITES
-      // const updatedFavorites = favoritesFetch.value.map((favorite) => {
-      //
-      //   // remove urls from Tweets that include media
-      //   let text = favorite.full_text;
-      //   if (favorite.entities.urls[0]) {
-      //     text = text.replace(favorite.entities.urls[0].url, '');
-      //   }
-      //
-      //   if (favorite.extended_entities) {
-      //     text= text.replace(favorite.extended_entities.media[0].url, '');
-      //   }
-      //
-      //   return <Tweet key={favorite.id_str} text={text} author={favorite.user.screen_name} profileImage={favorite.user.profile_image_url} mediaUrl={favorite.entities.media ? favorite.entities.media[0].media_url_https : null} />
-      // });
-
-    }
-  }
-
   fetchTweets(){
     const request = new Request(`${proxyUrl}${rootUrl}favorites/list.json?&tweet_mode=extended&screen_name=joewdsn&count=10`, {
     	headers: new Headers({
@@ -134,7 +101,7 @@ class Ticker extends Component {
         this.setState({ running: true });
         this.initWebTicker();
       }
-      // this.updateWebTicker();
+      this.updateWebTicker();
     }).catch((err) => {
     	// Error :(
       console.log('Error: ' + err);
