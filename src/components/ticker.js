@@ -30,17 +30,21 @@ class Ticker extends Component {
   }
 
   componentDidMount(){
-    const intervalId = setInterval(this.fetchTweets.bind(this), 10000);
-   // store intervalId in the state so it can be accessed later:
-   this.setState({intervalId: intervalId});
-
     const favorites = localStorage.getItem('tweets');
     if (favorites) {
       this.setState({ favorites: JSON.parse(favorites) });
+      if (!this.state.running) {
+        this.setState({ running: true });
+        this.initWebTicker();
+      }
       return;
     } else {
       this.fetchTweets();
     }
+
+    const intervalId = setInterval(this.fetchTweets.bind(this), 40000);
+    // store intervalId in the state so it can be accessed later:
+    this.setState({intervalId: intervalId});
   }
 
   componentWillUnmount(){
@@ -70,6 +74,15 @@ class Ticker extends Component {
       hoverpause: false,
       duplicate: true,
     });
+  }
+
+  updateWebTicker(){
+    jQuery(this.refs.webTicker).webTicker('update',
+        '<li data-update="item4">Maze Digital will now be commercially supporting the Web Ticker</li>',
+        'swap',
+        false,
+        false
+    );
   }
 
   updateTweets(){
@@ -106,7 +119,7 @@ class Ticker extends Component {
   }
 
   fetchTweets(){
-    const request = new Request(`${proxyUrl}${rootUrl}favorites/list.json?&tweet_mode=extended&screen_name=igbce&count=10`, {
+    const request = new Request(`${proxyUrl}${rootUrl}favorites/list.json?&tweet_mode=extended&screen_name=joewdsn&count=10`, {
     	headers: new Headers({
     		Authorization: 'Bearer AAAAAAAAAAAAAAAAAAAAAC7k2QAAAAAAUGifZBfJhkrz2xTH6o4f0F0KQcA%3DIqMxALOukBJv8V77TeGVsuGxwxlTKu3B1S8KUW3628TN3RrNSt'
     	})
@@ -121,6 +134,7 @@ class Ticker extends Component {
         this.setState({ running: true });
         this.initWebTicker();
       }
+      // this.updateWebTicker();
     }).catch((err) => {
     	// Error :(
       console.log('Error: ' + err);
@@ -131,7 +145,7 @@ class Ticker extends Component {
   render() {
 
 
-    const favoritesList = this.state.favorites.map((favorite) => {
+    const favoritesList = this.state.favorites.map((favorite, i) => {
 
       // remove urls from Tweets that include media
       let text = favorite.full_text;
@@ -143,7 +157,7 @@ class Ticker extends Component {
         text= text.replace(favorite.extended_entities.media[0].url, '');
       }
 
-      return <Tweet key={favorite.id_str} text={text} author={favorite.user.screen_name} profileImage={favorite.user.profile_image_url} mediaUrl={favorite.entities.media ? favorite.entities.media[0].media_url_https : null} />
+      return <Tweet key={favorite.id_str} itemNum={i+1} text={text} author={favorite.user.screen_name} profileImage={favorite.user.profile_image_url} mediaUrl={favorite.entities.media ? favorite.entities.media[0].media_url_https : null} />
     });
 
     return <ul id="webTicker" className={this.state.hideTweets ? "hidden" : ""} ref="webTicker">{favoritesList}</ul>
