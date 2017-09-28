@@ -17,6 +17,10 @@ body {
   background: #000;
 }
 
+.hidden {
+  visibility: hidden;
+}
+
 .error-message {
   font-size: 30px;
   line-height: 64px;

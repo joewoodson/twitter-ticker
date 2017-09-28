@@ -25,6 +25,7 @@ class Ticker extends Component {
     this.state = {
       favorites: [],
       running: false,
+      hideTweets: true,
     };
   }
 
@@ -39,7 +40,10 @@ class Ticker extends Component {
   componentWillReceiveProps(){
     if (!this.state.running) {
       this.initWebTicker();
-      this.setState({ running: true });
+      this.setState({
+        running: true,
+        hideTweets: false,
+      });
     }
   }
 
@@ -99,7 +103,7 @@ class Ticker extends Component {
 
     }
 
-    return <ul id="webTicker" ref="webTicker">{favoritesList}</ul>
+    return <ul id="webTicker" className={this.state.hideTweets ? "hidden" : ""} ref="webTicker">{favoritesList}</ul>
 
   }
 }
