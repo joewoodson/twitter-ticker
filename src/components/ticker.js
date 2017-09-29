@@ -95,7 +95,7 @@ class Ticker extends Component {
     // }
 
     let oldFavorites = this.state.favorites;
-    // let updatedFavorites = [];
+    let updatedFavorites = _.intersectionBy(oldFavorites, newFavorites, 'id_str');
 
     // for (let t of oldFavorites.keys()) {
     //   if (!_.some(newFavorites, { 'id_str': t.id_str })) {
@@ -108,15 +108,15 @@ class Ticker extends Component {
     // })
 
     for (let t of newFavorites) {
-      if (!_.some(oldFavorites, { 'id_str': t.id_str })) {
-        oldFavorites.push(t);
+      if (!_.some(updatedFavorites, { 'id_str': t.id_str })) {
+        updatedFavorites.push(t);
       }
     }
 
     // if (diffFavorites.length > 0) {
       // this.setState({ favorites: diffFavorites });
     // } else {
-      this.setState({ favorites: oldFavorites });
+      this.setState({ favorites: updatedFavorites });
     // }
   }
 
