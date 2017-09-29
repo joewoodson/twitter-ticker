@@ -9,18 +9,6 @@ declare var jQuery: jQuery;
 const rootUrl = 'https://api.twitter.com/1.1/';
 const proxyUrl = 'https://joe-p.herokuapp.com/';
 
-function getParameterByName(name, url) {
-    if (!url) url = window.location.href;
-    name = name.replace(/[[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
-}
-
-const speed = (getParameterByName('speed') && !isNaN(getParameterByName('speed'))) ? getParameterByName('speed') : 50;
-
 class Ticker extends Component {
   constructor(props) {
     super(props);
@@ -71,7 +59,7 @@ class Ticker extends Component {
 
   initWebTicker(){
     jQuery(this.refs.webTicker).webTicker({
-      speed: speed,
+      speed: 50,
       height: "64px",
       hoverpause: false,
       // duplicate: true,
