@@ -7,7 +7,7 @@ import Tweet from './tweet';
 declare var jQuery: jQuery;
 
 const rootUrl = 'https://api.twitter.com/1.1/';
-const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+const proxyUrl = 'https://joe-p.herokuapp.com/';
 
 function getParameterByName(name, url) {
     if (!url) url = window.location.href;
