@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import ReactDOMServer from 'react-dom/server';
+import ReactDOMServer from 'react-dom/server'
 import { connect } from 'react-refetch'
+import _ from 'lodash'
 import Tweet from './tweet';
 
 declare var jQuery: jQuery;
@@ -77,8 +78,50 @@ class Ticker extends Component {
     });
   }
 
+  updateTweets(newFavorites){
+    console.log('updating...');
+    // let newUnique = [];
+    //
+    // for (let t of diffFavorites) {
+    //   if (_.some(newFavorites, { 'id_str': t.id_str })) {
+    //     newUnique.push(t);
+    //     _.remove(newFavorites, { 'id_str': t.id_str });
+    //   }
+    // }
+    // if (newUnique.length > 0) {
+    //   for (let t of newUnique) {
+    //     newFavorites.push(t);
+    //   }
+    // }
+
+    let oldFavorites = this.state.favorites;
+    // let updatedFavorites = [];
+
+    // for (let t of oldFavorites.keys()) {
+    //   if (!_.some(newFavorites, { 'id_str': t.id_str })) {
+    //     oldFavorites.splice(t, 1);
+    //   }
+    // }
+
+    // const removeOld = oldFavorites.map((t) => {
+    //   return _.some(newFavorites, { 'id_str': t.id_str });
+    // })
+
+    for (let t of newFavorites) {
+      if (!_.some(oldFavorites, { 'id_str': t.id_str })) {
+        oldFavorites.push(t);
+      }
+    }
+
+    // if (diffFavorites.length > 0) {
+      // this.setState({ favorites: diffFavorites });
+    // } else {
+      this.setState({ favorites: oldFavorites });
+    // }
+  }
+
   fetchTweets(){
-    const request = new Request(`${proxyUrl}${rootUrl}favorites/list.json?&tweet_mode=extended&screen_name=joewdsn&count=10`, {
+    const request = new Request(`${proxyUrl}${rootUrl}favorites/list.json?&tweet_mode=extended&screen_name=joewdsn&count=3`, {
     	headers: new Headers({
     		Authorization: 'Bearer AAAAAAAAAAAAAAAAAAAAAC7k2QAAAAAAUGifZBfJhkrz2xTH6o4f0F0KQcA%3DIqMxALOukBJv8V77TeGVsuGxwxlTKu3B1S8KUW3628TN3RrNSt'
     	})
@@ -87,11 +130,11 @@ class Ticker extends Component {
     fetch(request).then((response) => {
     	return response.json();
     }).then((j) => {
-      this.setState({ favorites: j });
       if (!this.state.running) {
         this.setState({ running: true });
         this.initWebTicker();
       }
+      this.updateTweets(j);
     }).catch((err) => {
       console.log('Error: ' + err);
     });
