@@ -9,6 +9,18 @@ declare var jQuery: jQuery;
 const rootUrl = 'https://api.twitter.com/1.1/';
 const proxyUrl = 'https://joe-p.herokuapp.com/';
 
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+const mode = getParameterByName('mode');
+
 class Ticker extends Component {
   constructor(props) {
     super(props);
@@ -67,7 +79,7 @@ class Ticker extends Component {
   }
 
   updateTweets(newFavorites){
-    console.log('updating...');
+    console.log('updating favorites list...');
     // let newUnique = [];
     //
     // for (let t of diffFavorites) {
@@ -109,23 +121,27 @@ class Ticker extends Component {
   }
 
   fetchTweets(){
-    const request = new Request(`${proxyUrl}${rootUrl}favorites/list.json?&tweet_mode=extended&screen_name=joewdsn&count=10`, {
-    	headers: new Headers({
-    		Authorization: 'Bearer AAAAAAAAAAAAAAAAAAAAAC7k2QAAAAAAUGifZBfJhkrz2xTH6o4f0F0KQcA%3DIqMxALOukBJv8V77TeGVsuGxwxlTKu3B1S8KUW3628TN3RrNSt'
-    	})
-    });
+    if (mode !== 'offline') {
+      const request = new Request(`${proxyUrl}${rootUrl}favorites/list.json?&tweet_mode=extended&screen_name=joewdsn&count=10`, {
+      	headers: new Headers({
+      		Authorization: 'Bearer AAAAAAAAAAAAAAAAAAAAAC7k2QAAAAAAUGifZBfJhkrz2xTH6o4f0F0KQcA%3DIqMxALOukBJv8V77TeGVsuGxwxlTKu3B1S8KUW3628TN3RrNSt'
+      	})
+      });
 
-    fetch(request).then((response) => {
-    	return response.json();
-    }).then((j) => {
-      if (!this.state.running) {
-        this.setState({ running: true });
-        this.initWebTicker();
-      }
-      this.updateTweets(j);
-    }).catch((err) => {
-      console.log('Error: ' + err);
-    });
+      fetch(request).then((response) => {
+      	return response.json();
+      }).then((j) => {
+        if (!this.state.running) {
+          this.setState({ running: true });
+          this.initWebTicker();
+        }
+        this.updateTweets(j);
+      }).catch((err) => {
+        console.log('Error: ' + err);
+      });
+    } else {
+      console.log('currently running in offline mode');
+    }
 
   }
 
