@@ -32,17 +32,17 @@ class Ticker extends Component {
   }
 
   componentDidMount(){
-    const favorites = localStorage.getItem('tweets');
-    if (favorites) {
-      this.setState({ favorites: JSON.parse(favorites) });
-      if (!this.state.running) {
-        this.setState({ running: true });
-        this.initWebTicker();
-      }
-      return;
-    } else {
+    // const favorites = localStorage.getItem('tweets');
+    // if (favorites) {
+    //   this.setState({ favorites: JSON.parse(favorites) });
+    //   if (!this.state.running) {
+    //     this.setState({ running: true });
+    //     this.initWebTicker();
+    //   }
+    //   return;
+    // } else {
       this.fetchTweets();
-    }
+    // }
 
     const intervalId = setInterval(this.fetchTweets.bind(this), 60000);
     // store intervalId in the state so it can be accessed later:
@@ -94,6 +94,14 @@ class Ticker extends Component {
     //   }
     // }
 
+    // use local storage tweets if newFavorites is empty for some reason
+    if (!newFavorites && newFavorites.length() < 1) {
+      let favorites = localStorage.getItem('tweets');
+      if (favorites) {
+        this.setState({ favorites: JSON.parse(favorites) });
+      }
+    }
+
     let oldFavorites = this.state.favorites;
     let updatedFavorites = _.intersectionBy(oldFavorites, newFavorites, 'id_str');
 
@@ -113,8 +121,8 @@ class Ticker extends Component {
       }
     }
 
-    this.setState({ favorites: updatedFavorites });
     localStorage.setItem('tweets', JSON.stringify(updatedFavorites));
+    this.setState({ favorites: updatedFavorites });
   }
 
   fetchTweets(){
@@ -134,6 +142,10 @@ class Ticker extends Component {
         }
         this.updateTweets(j.reverse());
       }).catch((err) => {
+        let favorites = localStorage.getItem('tweets');
+        if (favorites) {
+          this.setState({ favorites: JSON.parse(favorites) });
+        }
         console.log('Error: ' + err);
       });
     } else {
