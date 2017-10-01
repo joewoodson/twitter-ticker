@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
-import ReactDOMServer from 'react-dom/server'
-import { connect } from 'react-refetch'
 import _ from 'lodash'
 import Tweet from './tweet';
 
-declare var jQuery: jQuery;
+// declare var jQuery: jQuery;
 
 const rootUrl = 'https://api.twitter.com/1.1/';
 const proxyUrl = 'https://joe-p.herokuapp.com/';
@@ -28,6 +26,7 @@ class Ticker extends Component {
       favorites: [],
       running: false,
       hideTweets: true,
+      offline: false,
     };
   }
 
@@ -61,25 +60,26 @@ class Ticker extends Component {
   componentWillReceiveProps(){
     // this.initWebTicker();
     if (!this.state.running) {
-      this.initWebTicker();
-      this.setState({
-        running: true,
-        hideTweets: false,
-      });
+      // this.initWebTicker();
+      // this.setState({
+      //   running: true,
+      //   hideTweets: false,
+      // });
     }
   }
 
-  initWebTicker(){
-    jQuery(this.refs.webTicker).webTicker({
-      speed: 50,
-      height: "64px",
-      hoverpause: false,
-      // duplicate: true,
-    });
-  }
+  // initWebTicker(){
+  //   jQuery(this.refs.webTicker).webTicker({
+  //     speed: 50,
+  //     height: "64px",
+  //     hoverpause: false,
+  //     // duplicate: true,
+  //   });
+  // }
 
   updateTweets(newFavorites){
     console.log('updating favorites list...');
+    this.setState({ offline: false });
     // let newUnique = [];
     //
     // for (let t of diffFavorites) {
@@ -138,10 +138,11 @@ class Ticker extends Component {
       }).then((j) => {
         if (!this.state.running) {
           this.setState({ running: true });
-          this.initWebTicker();
+          // this.initWebTicker();
         }
         this.updateTweets(j.reverse());
       }).catch((err) => {
+        this.setState({ offline: true });
         let favorites = localStorage.getItem('tweets');
         if (favorites) {
           this.setState({ favorites: JSON.parse(favorites) });
