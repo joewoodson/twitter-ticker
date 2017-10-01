@@ -19,7 +19,6 @@ function getParameterByName(name, url) {
 
 const mode = getParameterByName('mode');
 const speed = !isNaN(getParameterByName('speed')) ? getParameterByName('speed') : '80';
-console.log(speed);
 
 class Ticker extends Component {
   constructor(props) {
