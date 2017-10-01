@@ -9,7 +9,7 @@ const proxyUrl = 'https://joe-p.herokuapp.com/';
 
 function getParameterByName(name, url) {
     if (!url) url = window.location.href;
-    name = name.replace(/[\[\]]/g, "\\$&");
+    name = name.replace(/[[\]]/g, "\\$&");
     var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
         results = regex.exec(url);
     if (!results) return null;
@@ -18,6 +18,8 @@ function getParameterByName(name, url) {
 }
 
 const mode = getParameterByName('mode');
+const speed = !isNaN(getParameterByName('speed')) ? getParameterByName('speed') : '80';
+console.log(speed);
 
 class Ticker extends Component {
   constructor(props) {
@@ -48,6 +50,9 @@ class Ticker extends Component {
     const intervalId = setInterval(this.fetchTweets.bind(this), 60000);
     // store intervalId in the state so it can be accessed later:
     this.setState({intervalId: intervalId});
+
+    // set speed of ticker if query param is used
+    this.refs.ticker.style.animationDuration = `${speed}s`;
   }
 
   componentWillUnmount(){
