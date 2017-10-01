@@ -31,6 +31,12 @@ class Ticker extends Component {
   }
 
   componentDidMount(){
+    this.refs.ticker.addEventListener("webkitAnimationIteration", function(){
+      console.log('done scrolling');
+    });
+    this.refs.ticker.addEventListener("animationiteration", function(){
+      console.log('done scrolling');
+    });
     const favorites = localStorage.getItem('tweets');
     if (favorites) {
       this.setState({ favorites: JSON.parse(favorites) });
@@ -70,14 +76,9 @@ class Ticker extends Component {
     }
   }
 
-  // initWebTicker(){
-  //   jQuery(this.refs.webTicker).webTicker({
-  //     speed: 50,
-  //     height: "64px",
-  //     hoverpause: false,
-  //     // duplicate: true,
-  //   });
-  // }
+  scroll(){
+
+  }
 
   updateTweets(newFavorites){
     console.log('updating favorites list...');
@@ -179,7 +180,7 @@ class Ticker extends Component {
     // return <ul id="webTicker" className={this.state.hideTweets ? "hidden" : ""} ref="webTicker">{favoritesList}</ul>
     return (
       <div className="marquee">
-        <ul className="tweets">
+        <ul ref="ticker" className="tweets">
           {favoritesList}
         </ul>
       </div>
