@@ -35,6 +35,13 @@ body {
   align-items: center;
 }
 
+.marquee .tweets::after {
+  content: 'IG BCE 2017 GEMEINSCHAFT. MACHT. ZUKUNFT';
+  position: absolute;
+  font-size: 50px;
+  margin-right: 80px;
+}
+
 .marquee .tweets {
   display: inline-block;
   padding-left: 100%;
@@ -49,4 +56,14 @@ body {
 @keyframes marquee {
   0%   { transform: translate(0, 0); }
   100% { transform: translate(-100%, 0); }
+}
+
+@keyframes animatedBackground {
+	from { transform: translateX(0); }
+	to { transform: translateX(100%); }
+}
+
+@keyframes animatedBackgroundReverse {
+	from { transform: translateX(-100%); }
+	to { transform: translateX(0); }
 }
