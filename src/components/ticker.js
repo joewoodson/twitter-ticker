@@ -113,11 +113,8 @@ class Ticker extends Component {
       }
     }
 
-    // if (diffFavorites.length > 0) {
-      // this.setState({ favorites: diffFavorites });
-    // } else {
-      this.setState({ favorites: updatedFavorites });
-    // }
+    this.setState({ favorites: updatedFavorites });
+    localStorage.setItem('tweets', JSON.stringify(updatedFavorites));
   }
 
   fetchTweets(){
