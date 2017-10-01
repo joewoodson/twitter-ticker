@@ -122,7 +122,7 @@ class Ticker extends Component {
 
   fetchTweets(){
     if (mode !== 'offline') {
-      const request = new Request(`${proxyUrl}${rootUrl}favorites/list.json?&tweet_mode=extended&screen_name=nytimes&count=10`, {
+      const request = new Request(`${proxyUrl}${rootUrl}favorites/list.json?&tweet_mode=extended&screen_name=joewdsn&count=10`, {
       	headers: new Headers({
       		Authorization: 'Bearer AAAAAAAAAAAAAAAAAAAAAC7k2QAAAAAAUGifZBfJhkrz2xTH6o4f0F0KQcA%3DIqMxALOukBJv8V77TeGVsuGxwxlTKu3B1S8KUW3628TN3RrNSt'
       	})
@@ -135,7 +135,7 @@ class Ticker extends Component {
           this.setState({ running: true });
           this.initWebTicker();
         }
-        this.updateTweets(j);
+        this.updateTweets(j.reverse());
       }).catch((err) => {
         console.log('Error: ' + err);
       });
