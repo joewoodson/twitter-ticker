@@ -147,6 +147,7 @@ class Ticker extends Component {
           this.setState({ favorites: JSON.parse(favorites) });
         }
         console.log('Error: ' + err);
+        console.log('currently running in offline mode');
       });
     } else {
       console.log('currently running in offline mode');
