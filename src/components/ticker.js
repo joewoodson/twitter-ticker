@@ -31,12 +31,6 @@ class Ticker extends Component {
   }
 
   componentDidMount(){
-    this.refs.ticker.addEventListener("webkitAnimationIteration", function(){
-      console.log('done scrolling');
-    });
-    this.refs.ticker.addEventListener("animationiteration", function(){
-      console.log('done scrolling');
-    });
     const favorites = localStorage.getItem('tweets');
     if (favorites) {
       this.setState({ favorites: JSON.parse(favorites) });
@@ -125,7 +119,12 @@ class Ticker extends Component {
     }
 
     localStorage.setItem('tweets', JSON.stringify(updatedFavorites));
-    this.setState({ favorites: updatedFavorites });
+    this.refs.ticker.addEventListener("webkitAnimationIteration", () => {
+      this.setState({ favorites: updatedFavorites });
+    });
+    this.refs.ticker.addEventListener("animationiteration", () => {
+      this.setState({ favorites: updatedFavorites });
+    });
   }
 
   fetchTweets(){
