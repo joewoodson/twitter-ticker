@@ -31,8 +31,10 @@ class Ticker extends Component {
   }
 
   componentDidMount(){
-    // const favorites = localStorage.getItem('tweets');
-    // if (favorites) {
+    const favorites = localStorage.getItem('tweets');
+    if (favorites) {
+      this.setState({ favorites: JSON.parse(favorites) });
+    }
     //   this.setState({ favorites: JSON.parse(favorites) });
     //   if (!this.state.running) {
     //     this.setState({ running: true });
