@@ -35,6 +35,15 @@ body {
   align-items: center;
 }
 
+ul.newsticker li {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.tweets li:first-child {
+  /*margin-left: -800px;*/
+}
+
 /*.marquee .tweets::after {
   content: 'IG BCE 2017 GEMEINSCHAFT. MACHT. ZUKUNFT';
   position: absolute;

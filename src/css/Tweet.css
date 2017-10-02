@@ -5,12 +5,14 @@
   padding: 0 !important;
   display: flex;
   align-items: center;
+  height: 64px;
 }
 
 .tweet::after {
   content: "";
   display: inline-block;
-  margin: 0 32px !important;
+  /*margin: 0 32px !important;*/
+  margin: 0 37px;
   width: 2px;
   height: 45px;
   background: lightgrey;
@@ -19,7 +21,7 @@
 
 .tweet img {
   vertical-align: middle;
-  margin: 0 12px 0 8px;
+  /*margin: 0 12px 0 8px;*/
 }
 
 .tweet .image-attached {
