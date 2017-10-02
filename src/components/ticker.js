@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import _ from 'lodash'
 import Tweet from './tweet';
 
-// declare var jQuery: jQuery;
+declare var jQuery: jQuery;
 
 const rootUrl = 'https://api.twitter.com/1.1/';
 const proxyUrl = 'https://joe-p.herokuapp.com/';
@@ -60,7 +61,8 @@ class Ticker extends Component {
   }
 
   componentDidUpdate(){
-    // this.initWebTicker();
+    // console.log(this.refs.tweet903266364915376128);
+    this.startTicker();
   }
 
   componentWillReceiveProps(){
@@ -74,8 +76,24 @@ class Ticker extends Component {
     }
   }
 
-  scroll(){
+  startTicker(){
+    var slider = jQuery('#slider'),
+          imgs = jQuery('#slider img'),
+          sliderWidth = 0,
+          windowWidth = jQuery(window).width(),
+          startImg,
+          startPos,
+          prev = jQuery('#prev'),
+          next = jQuery('#next'),
+          totalSlides = 4,
+          clickTotal = 0;
 
+    for (let t of this.state.favorites) {
+      let tRef = `tweet${t.id_str}`;
+      // console.log(tRef);
+      console.log(this.refs[tRef].clientWidth);
+
+    }
   }
 
   updateTweets(newFavorites){
@@ -164,7 +182,6 @@ class Ticker extends Component {
 
   render() {
 
-
     const favoritesList = this.state.favorites.map((favorite, i) => {
 
       // remove urls from Tweets that include media
@@ -177,7 +194,16 @@ class Ticker extends Component {
         text= text.replace(favorite.extended_entities.media[0].url, '');
       }
 
-      return <Tweet key={favorite.id_str} itemNum={i+1} text={text} author={favorite.user.screen_name} profileImage={favorite.user.profile_image_url} mediaUrl={favorite.entities.media ? favorite.entities.media[0].media_url_https : null} />
+      let mediaUrl = favorite.entities.media ? favorite.entities.media[0].media_url_https : null;
+
+      return (
+        <li key={favorite.id_str} ref={`tweet${favorite.id_str}`} id={favorite.id_str} className={i === 0 ? "first tweet" : "tweet"}>
+          <img src={favorite.user.profile_image_url} alt="" /> <span className="author">@{favorite.user.screen_name}:</span> <span className="text">{text}</span>
+          { mediaUrl &&
+            <img className="image-attached" src={mediaUrl} alt="" />
+          }
+        </li>
+      )
     });
 
     // return <ul id="webTicker" className={this.state.hideTweets ? "hidden" : ""} ref="webTicker">{favoritesList}</ul>
