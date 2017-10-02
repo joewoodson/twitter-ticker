@@ -36,6 +36,8 @@ class Ticker extends Component {
     const favorites = localStorage.getItem('tweets');
     if (favorites) {
       this.setState({ favorites: JSON.parse(favorites) });
+    } else {
+      this.fetchTweets();
     }
     //   this.setState({ favorites: JSON.parse(favorites) });
     //   if (!this.state.running) {
@@ -44,7 +46,7 @@ class Ticker extends Component {
     //   }
     //   return;
     // } else {
-      this.fetchTweets();
+      // this.fetchTweets();
     // }
 
     const intervalId = setInterval(this.fetchTweets.bind(this), 60000);
@@ -80,6 +82,7 @@ class Ticker extends Component {
   }
 
   handleTickerClones(){
+    console.log('handleClones');
     var $line = jQuery(this.refs.ticker);
     var lineWidth = 1;
     $line.children("li.tick-clones").remove();
@@ -99,6 +102,7 @@ class Ticker extends Component {
   }
 
   handleTicker(){
+    console.log('handleTicker');
     var j = jQuery;
         var $line = j(this.refs.ticker);
         var id = "ER_"+ new Date().getTime();
