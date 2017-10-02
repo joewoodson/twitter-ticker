@@ -66,7 +66,6 @@ class Ticker extends Component {
     // console.log(this.refs.tweet903266364915376128);
     if (!this.state.running) {
       this.handleTicker();
-      this.setState({ running: true });
     }
   }
 
@@ -262,11 +261,9 @@ class Ticker extends Component {
     localStorage.setItem('tweets', JSON.stringify(updatedFavorites));
     // this.refs.ticker.addEventListener("webkitAnimationIteration", () => {
       this.setState({ favorites: updatedFavorites });
-      if (!this.state.running) {
-        this.setState({ running: true });
-        this.hand
-      }
-      this.handleTickerClones();
+      this.handleTicker();
+      if (this.state.running) this.handleTickerClones();
+
     // });
     // this.refs.ticker.addEventListener("animationiteration", () => {
       // this.setState({ favorites: updatedFavorites });
