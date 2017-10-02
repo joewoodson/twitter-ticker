@@ -63,20 +63,8 @@ class Ticker extends Component {
   }
 
   componentDidUpdate(){
-    // console.log(this.refs.tweet903266364915376128);
     if (!this.state.running) {
       this.handleTicker();
-    }
-  }
-
-  componentWillReceiveProps(){
-    // this.initWebTicker();
-    if (!this.state.running) {
-      // this.initWebTicker();
-      // this.setState({
-      //   running: true,
-      //   hideTweets: false,
-      // });
     }
   }
 
@@ -323,7 +311,6 @@ class Ticker extends Component {
       )
     });
 
-    // return <ul id="webTicker" className={this.state.hideTweets ? "hidden" : ""} ref="webTicker">{favoritesList}</ul>
     return (
       <div className="marquee">
         <ul ref="ticker" className="tweets">
@@ -334,15 +321,5 @@ class Ticker extends Component {
 
   }
 }
-
-// export default connect(props => ({
-//   favoritesFetch: {
-//     url: `${proxyUrl}${rootUrl}favorites/list.json?&tweet_mode=extended&screen_name=igbce&count=10`,
-//     refreshInterval: 60000,
-//     headers: {
-//       Authorization: 'Bearer AAAAAAAAAAAAAAAAAAAAAC7k2QAAAAAAUGifZBfJhkrz2xTH6o4f0F0KQcA%3DIqMxALOukBJv8V77TeGVsuGxwxlTKu3B1S8KUW3628TN3RrNSt'
-//     },
-//   }
-// }))(Ticker)
 
 export default Ticker;
