@@ -185,8 +185,6 @@ class Ticker extends Component {
       <div className="marquee">
         <ul ref="ticker" className="tweets">
           {favoritesList}
-          {favoritesList}
-          {favoritesList}
         </ul>
       </div>
     )
