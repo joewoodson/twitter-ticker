@@ -63,7 +63,7 @@ class Ticker extends Component {
   componentDidUpdate(){
     // console.log(this.refs.tweet903266364915376128);
     if (!this.state.running) {
-      this.startTicker();
+      this.handleTicker();
       this.setState({ running: true });
     }
   }
@@ -79,29 +79,23 @@ class Ticker extends Component {
     }
   }
 
-  startTicker(){
-    // jQuery(this.refs.ticker).endlessRiver();
-    this.handleTicker();
+  handleTickerClones(){
+    var $line = jQuery(this.refs.ticker);
+    var lineWidth = 1;
+    $line.children("li.tick-clones").remove();
+    var $tickercontainer = $line.parent();
+    var elements = $line.children("li");
+    var fill = function(){
+			lineWidth = 1;
+			$line.append(elements.clone(true).addClass("tick-clones"));
+			$line.children("li").each(function (i) {
+				lineWidth += jQuery(this, i).outerWidth(true);
+				//outherWidth con argomento true ritorna larghezza compresi margini
+			});
 
-    var slider = jQuery('#slider'),
-          imgs = jQuery('#slider img'),
-          sliderWidth = 0,
-          windowWidth = jQuery(window).width(),
-          startImg,
-          startPos,
-          prev = jQuery('#prev'),
-          next = jQuery('#next'),
-          totalSlides = 10,
-          clickTotal = 0;
-
-    for (let t of this.state.favorites) {
-      if (t.id_str) {
-        let tRef = `tweet${t.id_str}`;
-        let tWidth = this.refs[tRef].innerWidth;
-        // let tWidth = jQuery(this.refs[tRef]).width();
-        sliderWidth += tWidth;
-      }
-    }
+		}
+    var l = $tickercontainer.outerWidth(true);
+		while(lineWidth<l) fill();
   }
 
   handleTicker(){
@@ -260,6 +254,7 @@ class Ticker extends Component {
     localStorage.setItem('tweets', JSON.stringify(updatedFavorites));
     // this.refs.ticker.addEventListener("webkitAnimationIteration", () => {
       this.setState({ favorites: updatedFavorites });
+      this.handleTickerClones();
     // });
     // this.refs.ticker.addEventListener("animationiteration", () => {
       // this.setState({ favorites: updatedFavorites });
