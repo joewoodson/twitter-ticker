@@ -62,7 +62,10 @@ class Ticker extends Component {
 
   componentDidUpdate(){
     // console.log(this.refs.tweet903266364915376128);
-    this.startTicker();
+    if (!this.state.running) {
+      this.startTicker();
+      this.setState({ running: true });
+    }
   }
 
   componentWillReceiveProps(){
@@ -77,6 +80,8 @@ class Ticker extends Component {
   }
 
   startTicker(){
+    jQuery(this.refs.ticker).endlessRiver({ speed: 200 });
+
     var slider = jQuery('#slider'),
           imgs = jQuery('#slider img'),
           sliderWidth = 0,
@@ -85,14 +90,16 @@ class Ticker extends Component {
           startPos,
           prev = jQuery('#prev'),
           next = jQuery('#next'),
-          totalSlides = 4,
+          totalSlides = 10,
           clickTotal = 0;
 
     for (let t of this.state.favorites) {
-      let tRef = `tweet${t.id_str}`;
-      // console.log(tRef);
-      console.log(this.refs[tRef].clientWidth);
-
+      if (t.id_str) {
+        let tRef = `tweet${t.id_str}`;
+        let tWidth = this.refs[tRef].innerWidth;
+        // let tWidth = jQuery(this.refs[tRef]).width();
+        sliderWidth += tWidth;
+      }
     }
   }
 
@@ -141,17 +148,17 @@ class Ticker extends Component {
     }
 
     localStorage.setItem('tweets', JSON.stringify(updatedFavorites));
-    this.refs.ticker.addEventListener("webkitAnimationIteration", () => {
+    // this.refs.ticker.addEventListener("webkitAnimationIteration", () => {
       this.setState({ favorites: updatedFavorites });
-    });
-    this.refs.ticker.addEventListener("animationiteration", () => {
-      this.setState({ favorites: updatedFavorites });
-    });
+    // });
+    // this.refs.ticker.addEventListener("animationiteration", () => {
+      // this.setState({ favorites: updatedFavorites });
+    // });
   }
 
   fetchTweets(){
     if (mode !== 'offline') {
-      const request = new Request(`${proxyUrl}${rootUrl}favorites/list.json?&tweet_mode=extended&screen_name=igbce&count=10`, {
+      const request = new Request(`${proxyUrl}${rootUrl}favorites/list.json?&tweet_mode=extended&screen_name=joewdsn&count=10`, {
       	headers: new Headers({
       		Authorization: 'Bearer AAAAAAAAAAAAAAAAAAAAAC7k2QAAAAAAUGifZBfJhkrz2xTH6o4f0F0KQcA%3DIqMxALOukBJv8V77TeGVsuGxwxlTKu3B1S8KUW3628TN3RrNSt'
       	})
