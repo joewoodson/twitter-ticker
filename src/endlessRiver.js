@@ -1,3 +1,5 @@
+declare var jQuery: jQuery;
+
 jQuery.fn.endlessRiver = function (settings) {
     settings = jQuery.extend({
         speed: 100,
